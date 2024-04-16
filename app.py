@@ -1,24 +1,17 @@
-from flask import Flask, render_template, request
-
-# Import the healthcare_chatbot function from chat_bot2.py
-from chat_bot2 import healthcare_chatbot
+from flask import Flask, render_template, request, jsonify
+from chat_bot2 import tree_to_code  # Import the tree_to_code function
 
 app = Flask(__name__)
 
-# Define route for the home page
 @app.route('/')
-def home():
+def index():
     return render_template('index.html')
 
-# Define route to handle chatbot functionality
-@app.route('/get', methods=['GET'])
-def get_bot_response():
-    user_input = request.args.get('msg')
-    # Call the healthcare_chatbot function with the user input
-    # and get the response
-    response = healthcare_chatbot(user_input)
-    # Return the response as a string
-    return str(response)
+@app.route('/get_response', methods=['POST'])
+def get_response():
+    symptom = request.form['msg']  # Get the symptom from the form
+    response = tree_to_code(symptom)  # Call tree_to_code with the symptom
+    return jsonify({'response': response})
 
 if __name__ == '__main__':
     app.run(debug=True)

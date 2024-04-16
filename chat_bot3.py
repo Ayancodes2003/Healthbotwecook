@@ -68,10 +68,6 @@ severityDictionary=dict()
 description_list = dict()
 precautionDictionary=dict()
 
-user_input = {'symptom': 'fever', 'days': 3}
-print(healthcare_chatbot(user_input))
-
-
 symptoms_dict = {}
 
 for index, symptom in enumerate(x):
@@ -270,4 +266,3 @@ getprecautionDict()
 getInfo()
 tree_to_code(clf,cols)
 print("----------------------------------------------------------------------------------------")
-

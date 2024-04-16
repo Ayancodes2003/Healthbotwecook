@@ -1,5 +1,4 @@
 import re
-import pickle
 import pandas as pd
 import pyttsx3
 from sklearn import preprocessing
@@ -10,6 +9,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.svm import SVC
 import csv
 import warnings
+
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 def healthcare_chatbot(user_input):
@@ -139,14 +139,10 @@ def healthcare_chatbot(user_input):
             for i in tree_.feature
         ]
 
-        chk_dis = ",".join(feature_names).split(",")
-        symptoms_present = []
-
         disease_input = user_input['symptom']
         num_days = user_input['days']
 
         def recurse(node, depth):
-            indent = "  " * depth
             if tree_.feature[node] != _tree.TREE_UNDEFINED:
                 name = feature_name[node]
                 threshold = tree_.threshold[node]
@@ -158,7 +154,6 @@ def healthcare_chatbot(user_input):
                 if val <= threshold:
                     return recurse(tree_.children_left[node], depth + 1)
                 else:
-                    symptoms_present.append(name)
                     return recurse(tree_.children_right[node], depth + 1)
             else:
                 present_disease = print_disease(tree_.value[node])
@@ -182,5 +177,5 @@ def healthcare_chatbot(user_input):
     return tree_to_code(clf, cols, user_input)
 
 # Example usage:
-# user_input = {'symptom': 'fever', 'days': 3}
-# print(healthcare_chatbot(user_input))
+user_input = {'symptom': 'fever', 'days': 3}
+print(healthcare_chatbot(user_input))
